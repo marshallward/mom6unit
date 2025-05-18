@@ -1,0 +1,546 @@
+NOTE: MPP_DOMAINS_SET_STACK_SIZE: stack size set to    32768.
+
+=== test_open_param_file
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_close_param_file_quiet
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_open_param_file_component
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_open_param_file_docdir
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_open_param_file_empty_filename
+ (FATAL): open_param_file: Input file has not been specified.
+
+=== test_open_param_file_longname
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_missing_param_file
+ (FATAL): open_param_file: Input file 'MISSING_input' does not exist.
+
+=== test_open_param_file_ioerr
+ (FATAL): open_param_file: Error opening 'TEST_input'.
+
+=== test_open_param_file_checkable
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_reopen_param_file
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: open_param_file: file TEST_input has already been opened. This should NOT happen! Did you specify the same file twice in a namelist?
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_open_param_file_netcdf
+ (FATAL): open_param_file: NetCDF files are not yet supported.
+
+=== test_open_param_file_no_doc
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_int
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_int_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_int: Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_int_undefined
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_int: Variable SAMPLE_PARAMETER found but not set in input files.
+
+=== test_read_param_int_type_err
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_int: read error for integer variable SAMPLE_PARAMETER parsing "not_an_integer"
+
+=== test_read_param_int_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_int_array_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_int_array: Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_int_array_undefined
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_int_array: Variable SAMPLE_PARAMETER found but not set in input files.
+
+=== test_read_param_int_array_type_err
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_int_array: read error for integer array SAMPLE_PARAMETER parsing "not_an_int_array"
+
+=== test_read_param_real
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_real_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_real: Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_real_undefined
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_real: Variable SAMPLE_PARAMETER found but not set in input files.
+
+=== test_read_param_real_type_err
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_real: read error for real variable SAMPLE_PARAMETER parsing "not_a_real"
+
+=== test_read_param_real_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_real_array_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_real_array: Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_real_array_undefined
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_real_array: Variable SAMPLE_PARAMETER found but not set in input files.
+
+=== test_read_param_real_array_type_err
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_real_array: read error for real array SAMPLE_PARAMETER parsing "not_a_real_array"
+
+=== test_read_param_logical
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_logical_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_char_no_delim
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_char_quote_delim
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_char_apostrophe_delim
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_char_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_char_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_char_array_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_time_date
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_time_date_bad_format
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_time: Form of character time stamp is incorrect. The character time stamp is: 1980--01--01 00::00::00 in integer list read error for time-type variable SAMPLE_PARAMETER parsing "1980--01--01 00::00::00"
+
+=== test_read_param_time_tuple
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_time_bad_tuple
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_time: integer list read error for time-type variable SAMPLE_PARAMETER parsing "1980, 1"
+
+=== test_read_param_time_bad_tuple_values
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_time: Invalid date. Date=0000-00-00 00:00:00 in integer list read error for time-type variable SAMPLE_PARAMETER parsing "0, 0, 0, 0, 0, 0"
+
+=== test_read_param_time_missing
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): Unable to find variable MISSING_PARAMETER in any input files.
+
+=== test_read_param_time_undefined
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): Variable SAMPLE_PARAMETER found but not set in input files.
+
+=== test_read_param_time_type_err
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): read_param_time: read error for time-type variable SAMPLE_PARAMETER parsing "1., 2., 3., 4., 5., 6."
+
+=== test_read_param_time_unit
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_unused_fatal
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: Unused line in TEST_input : SAMPLE_PARAMETER = 1
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+ (FATAL): Run stopped because of unused parameter lines.
+
+=== test_read_param_multiline_comment
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_multiline_comment_unclosed
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : A C-style multi-line comment (/* ... */) was not closed before the end of TEST_input
+
+=== test_read_param_multiline_param
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: Unused line in TEST_input : SAMPLE_PARAMETER = \
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_multiline_param_unclosed
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : the last line of the file ends in a continuation character but there are no more lines to read.  Line: 'SAMPLE_PARAMETER = \' in file TEST_input.
+
+=== test_read_param_replace_tabs
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_pad_equals
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_misplaced_quote
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): There is a mismatched quote in the parameter file line: SAMPLE_PARAMETER = "abc
+
+=== test_read_param_define
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_define_as_flag
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_override
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER over-ridden.  Line: 'SAMPLE_PARAMETER = 2' in file TEST_input.
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_override_misplaced
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : #override was found  but was not the first keyword. Line: '#define #override SAMPLE_PARAMETER = 1' in file TEST_input.
+
+=== test_read_param_override_twice
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER over-ridden.  Line: 'SAMPLE_PARAMETER = 2' in file TEST_input.
+
+ (FATAL): MOM_file_parser : SAMPLE_PARAMETER found with multiple inconsistent overrides. Line A: '2' Line B: 'SAMPLE_PARAMETER = 3' in file TEST_input caused the model failure.
+
+=== test_read_param_override_repeat
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER over-ridden.  Line: 'SAMPLE_PARAMETER = 2' in file TEST_input.
+
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER over-ridden more times than is permitted. Line: 'SAMPLE_PARAMETER = 2' in file TEST_input is being ignored.
+
+
+=== test_read_param_override_warn_chain
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : OTHER_PARAMETER over-ridden.  Line: 'OTHER_PARAMETER = 3' in file TEST_input.
+
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER over-ridden.  Line: 'SAMPLE_PARAMETER = 4' in file TEST_input.
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_override_no_def
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : override was found  without a define or undef. Line: 'SAMPLE_PARAMETER' in file TEST_input.
+
+=== test_read_param_assign_after_override
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER has already been over-ridden. Line: 'SAMPLE_PARAMETER = 3' in file TEST_input is being ignored.
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_assign_twice
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : SAMPLE_PARAMETER found with multiple inconsistent definitions. Line A: '1' Line B: 'SAMPLE_PARAMETER = 2' in file TEST_input caused the model failure.
+
+=== test_read_param_assign_repeat
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER occurs more times than is permitted. Line: 'SAMPLE_PARAMETER = 1' in file TEST_input is being ignored.
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_null_stmt
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : the parameter name 'SAMPLE_PARAMETER' was found without define or undef. Line: 'SAMPLE_PARAMETER' in file TEST_input.
+
+=== test_read_param_assign_in_define
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): MOM_file_parser : Both 'a=b' and 'undef/define' syntax occur. Line: '#define SAMPLE_PARAMETER = 1' in file TEST_input.
+
+=== test_read_param_block
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_block_inline_stack
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: Unused line in TEST_input : DEF%SAMPLE_PARAMETER = 123
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_read_param_block_empty_pop
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): popBlockLevel: A pop was attempted leaving an empty block name.
+
+=== test_read_param_block_close_unopened
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): get_variable_line: An extra close block was encountered. Line="%CBA"
+
+=== test_read_param_block_close_unnamed
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): closeParameterBlock: A pop was attempted on an empty stack. ("")
+
+=== test_read_param_block_unmatched
+NOTE: open_param_file: TEST_input has been opened successfully.
+ (FATAL): get_variable_line: A named close for a parameter block did not match the open block. Line="%CBA"
+
+=== test_read_param_block_outside_block
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: MOM_file_parser : SAMPLE_PARAMETER found outside of block %. Ignoring.
+
+
+=== test_open_unallocated_block
+ (FATAL): openParameterBlock: A push was attempted before allocation.
+
+=== test_close_unallocated_block
+ (FATAL): closeParameterBlock: A pop was attempted before allocation.
+
+=== test_clear_unallocated_block
+ (FATAL): clearParameterBlock: A clear was attempted before allocation.
+
+=== test_log_version_cs
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_version_plain
+
+=== test_log_param_int
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_int_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_real
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_real_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_time
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_time_as_date
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_time_as_date_default
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: Previous msg:SAMPLE_PARAMETER = "1980-01-01 00:00:00" !   [[date]] default = "1980-01-01 00:00:0.000"
+
+
+WARNING: New message :SAMPLE_PARAMETER = "1980-01-01 00:00:00" !   [[date]] default = "1980-01-01 00:00:0.000000"
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_time_as_date_tick
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_time_with_unit
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_log_param_time_with_timeunit
+NOTE: open_param_file: TEST_input has been opened successfully.
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 6.24097440005E+10 !   [seconds]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 1.733604000013889E+07 !   [hours]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 6.24097440005E+10 !   [seconds]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 7.22335000005787E+05 !   [days]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 1.733604000013889E+07 !   [hours]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 7.22335000005787E+05 !   [days]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 6.24097440005E+10 !   [seconds]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 2013.2175484032257 !   [years]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 1.733604000013889E+07 !   [hours]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 2013.2175484032257 !   [years]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 7.22335000005787E+05 !   [days]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 2013.2175484032257 !   [years]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 6.24097440005E+10 !   [seconds]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 624.097440005 !   [1.00E+08 sec]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 1.733604000013889E+07 !   [hours]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 624.097440005 !   [1.00E+08 sec]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 7.22335000005787E+05 !   [days]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 624.097440005 !   [1.00E+08 sec]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+
+WARNING: Previous msg:SAMPLE_PARAMETER = 2013.2175484032257 !   [years]
+
+
+WARNING: New message :SAMPLE_PARAMETER = 624.097440005 !   [1.00E+08 sec]
+
+
+WARNING: Encountered inconsistent documentation line for parameter SAMPLE_PARAMETER!
+
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_int
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_int_no_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_int_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_int_array_no_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_real
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_real_n_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_real_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_real_array_no_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_char
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_char_no_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_char_array
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_logical
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_logical_default
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_logical_no_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_time
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+
+=== test_get_param_time_np_read_no_log
+NOTE: open_param_file: TEST_input has been opened successfully.
+NOTE: close_param_file: TEST_input has been closed successfully.
+ MPP_DOMAINS_STACK high water mark=           0

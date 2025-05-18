@@ -1,0 +1,145 @@
+        -:    0:Source:/home/marshall/gfdl/mom6/src/framework/MOM_file_parser.F90
+        -:    0:Graph:MOM_file_parser.gcno
+        -:    0:Data:MOM_file_parser.gcda
+        -:    0:Runs:7
+        -:    1:!> The MOM6 facility to parse input files for runtime parameters
+        -:    2:module MOM_file_parser
+        -:    3:
+        -:  ...:
+        -:  128:!> Make the contents of a parameter input file available in a param_file_type
+      425:  129:subroutine open_param_file(filename, CS, checkable, component, doc_file_dir, ensemble_num)
+        -:  130:  character(len=*),           intent(in) :: filename !< An input file name, optionally with the full path
+        -:  131:  type(param_file_type),   intent(inout) :: CS      !< The control structure for the file_parser module,
+        -:  132:                                         !! it is also a structure to parse for run-time parameters
+        -:  133:  logical,          optional, intent(in) :: checkable   !< If this is false, it disables checks of this
+        -:  134:                                         !! file for unused parameters.  The default is True.
+        -:  135:  character(len=*), optional, intent(in) :: component   !< If present, this component name is used
+        -:  136:                                         !! to generate parameter documentation file names; the default is"MOM"
+        -:  137:  character(len=*), optional, intent(in) :: doc_file_dir !< An optional directory in which to write out
+        -:  138:                                         !! the documentation files.  The default is effectively './'.
+        -:  139:  integer, optional, intent(in)          :: ensemble_num !< ensemble number to be appended to _doc filenames (optional)
+        -:  140:
+        -:  141:  ! Local variables
+        -:  142:  logical :: file_exists, Netcdf_file, may_check, reopened_file
+        -:  143:  integer :: ios, iounit, strlen, i
+        -:  144:  character(len=240) :: doc_path
+        -:  145:  character(len=5)  :: ensemble_suffix
+        -:  146:  type(parameter_block), pointer :: block => NULL()
+        -:  147:
+        5:  148:  may_check = .true. ; if (present(checkable)) may_check = checkable
+        -:  149:
+        -:  150:  ! Check for non-blank filename
+      425:  151:  strlen = len_trim(filename)
+      425:  152:  if (strlen == 0) then
+        3:  153:    call MOM_error(FATAL, "open_param_file: Input file has not been specified.")
+        -:  154:  endif
+        -:  155:
+        -:  156:  ! Check that this file has not already been opened
+      422:  157:  if (CS%nfiles > 0) then
+        5:  158:    reopened_file = .false.
+        -:  159:
+        5:  160:    if (is_root_pe()) then
+        4:  161:      inquire(file=trim(filename), number=iounit)
+        4:  162:      if (iounit /= -1) then
+        8:  163:        do i = 1, CS%nfiles
+        8:  164:          if (CS%iounit(i) == iounit) then
+        -:  165:            call assert(trim(CS%filename(1)) == trim(filename), &
+        -:  166:                "open_param_file: internal inconsistency! "//trim(filename)// &
+        4:  167:                " is registered as open but has the wrong unit number!")
+        -:  168:            call MOM_error(WARNING, &
+        -:  169:                "open_param_file: file "//trim(filename)// &
+        -:  170:                " has already been opened. This should NOT happen!"// &
+        4:  171:                " Did you specify the same file twice in a namelist?")
+        4:  172:            reopened_file = .true.
+        -:  173:          endif ! unit numbers
+        -:  174:        enddo ! i
+        -:  175:      endif
+        -:  176:    endif
+        -:  177:
+        5:  178:    if (any_across_PEs(reopened_file)) return
+        -:  179:  endif
+        -:  180:
+        -:  181:  ! Check that the file exists to readstdlog
+      417:  182:  if (is_root_pe()) then
+      357:  183:    inquire(file=trim(filename), exist=file_exists)
+      357:  184:    if (.not.file_exists) call MOM_error(FATAL, &
+       3*:  185:        "open_param_file: Input file '"// trim(filename)//"' does not exist.")
+        -:  186:  endif
+        -:  187:
+      414:  188:  Netcdf_file = .false.
+      414:  189:  if (strlen > 3) then
+      414:  190:    if (filename(strlen-2:strlen) == ".nc") Netcdf_file = .true.
+        -:  191:  endif
+        -:  192:
+      414:  193:  if (Netcdf_file) &
+        3:  194:    call MOM_error(FATAL,"open_param_file: NetCDF files are not yet supported.")
+        -:  195:
+      411:  196:  if (is_root_pe()) then
+        -:  197:    open(newunit=iounit, file=trim(filename), access='SEQUENTIAL', &
+      351:  198:         form='FORMATTED', action='READ', position='REWIND', iostat=ios)
+     351*:  199:    if (ios /= 0) call MOM_error(FATAL, "open_param_file: Error opening '"//trim(filename)//"'.")
+        -:  200:  else
+       60:  201:    iounit = 1
+        -:  202:  endif
+        -:  203:
+        -:  204:  ! Store/register the unit and details
+      408:  205:  i = CS%nfiles + 1
+      408:  206:  CS%nfiles = i
+      408:  207:  CS%iounit(i) = iounit
+      408:  208:  CS%filename(i) = filename
+      408:  209:  CS%NetCDF_file(i) = Netcdf_file
+        -:  210:
+     408*:  211:  if (associated(CS%blockName)) deallocate(CS%blockName)
+     408*:  212:  allocate(block) ; block%name = '' ; CS%blockName => block
+        -:  213:
+      408:  214:  call MOM_mesg("open_param_file: "// trim(filename)//" has been opened successfully.", 5)
+        -:  215:
+      408:  216:  call populate_param_data(iounit, filename, CS%param_data(i))
+        -:  217:  ! Increment the maximum line length, but always report values in blocks of 4 characters.
+      402:  218:  CS%max_line_len = max(CS%max_line_len, 4 + 4*(max_input_line_length(CS, i) - 1) / 4)
+        -:  219:
+      399:  220:  call read_param(CS,"SEND_LOG_TO_STDOUT",CS%log_to_stdout)
+      390:  221:  call read_param(CS,"REPORT_UNUSED_PARAMS",CS%report_unused)
+      390:  222:  call read_param(CS,"FATAL_UNUSED_PARAMS",CS%unused_params_fatal)
+      390:  223:  CS%doc_file = "MOM_parameter_doc"
+      390:  224:  if (present(ensemble_num)) then
+        -:  225:    ! append instance suffix to doc_file
+    #####:  226:    write(ensemble_suffix,'(A,I0.4)') '_', ensemble_num
+    #####:  227:    CS%doc_file = trim(CS%doc_file)//ensemble_suffix
+        -:  228:  endif
+     390*:  229:  if (present(component)) CS%doc_file = trim(component)//"_parameter_doc"
+      390:  230:  call read_param(CS,"DOCUMENT_FILE", CS%doc_file)
+      390:  231:  if (.not.may_check) then
+        5:  232:    CS%report_unused = .false.
+        5:  233:    CS%unused_params_fatal = .false.
+        -:  234:  endif
+        -:  235:
+        -:  236:  ! Open the log file.
+      390:  237:  CS%stdlog = stdlog() ; CS%stdout = stdout()
+      390:  238:  CS%log_open = (stdlog() > 0)
+        -:  239:
+      390:  240:  doc_path = CS%doc_file
+      390:  241:  if (len_trim(CS%doc_file) > 0) then
+      385:  242:    CS%complete_doc = complete_doc_default
+      385:  243:    call read_param(CS, "COMPLETE_DOCUMENTATION", CS%complete_doc)
+      385:  244:    CS%minimal_doc = minimal_doc_default
+      385:  245:    call read_param(CS, "MINIMAL_DOCUMENTATION", CS%minimal_doc)
+      385:  246:    if (present(doc_file_dir)) then ; if (len_trim(doc_file_dir) > 0) then
+       5*:  247:      doc_path = trim(slasher(doc_file_dir))//trim(CS%doc_file)
+        -:  248:    endif ; endif
+        -:  249:  else
+        5:  250:    CS%complete_doc = .false.
+        5:  251:    CS%minimal_doc = .false.
+        -:  252:  endif
+        -:  253:  call doc_init(doc_path, CS%doc, minimal=CS%minimal_doc, complete=CS%complete_doc, &
+      390:  254:                layout=CS%complete_doc, debugging=CS%complete_doc)
+        -:  255:
+      425:  256:end subroutine open_param_file
+        -:  ...:
+------------------
+__mom_file_parser_MOD___copy_mom_file_parser_Param_file_type:
+    #####: 2445:end module MOM_file_parser
+------------------
+__mom_file_parser_MOD___final_mom_file_parser_Param_file_type:
+    #####: 2445:end module MOM_file_parser
+------------------

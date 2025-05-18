@@ -275,6 +275,7 @@ $if(mathjax)$
           mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           "HTML-CSS": {
+              webFont: "Neo-Euler",
               preferredFont: "Neo-Euler",
               //preferredFont: "Asana-Math",
           },

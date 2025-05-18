@@ -11,7 +11,433 @@ Unit Testing in MOM6
    Gathering of talking points for porting MOM6 to GPU platforms.
 
 
-Test
-====
+State of MOM6 Testing
+=====================
 
-testing
+MOM6 has a strong culture of testing and reproducibility.
+Testing of every pull request includes the following:
+
+* Regression testing of production runs
+
+* Dimensional consistency
+
+* Rotational invariance
+
+* All testing is *bitwise reproducible*
+
+But *unit testing* is a relatively new concept to our test suite.
+
+
+CI Testing
+==========
+
+.. notes::
+
+   These are *platform independent* tests, designed to run anywhere.
+
+   Every PR into MOM6 must satisfy these tests.
+
+.. image:: img/gh_ci.png
+   :target: https://github.com/NOAA-GFDL/MOM6/actions/runs/15124445093
+
+Idealized experiments must satisfy global criteria
+
+
+Regression Testing
+==================
+
+.. notes::
+
+   These are very specific tests based on production runs at GFDL and must
+   reproduce answers.
+
+.. image:: img/gitlab_regression.png
+   :target: https://gitlab.gfdl.noaa.gov/ogrp/mom6ci/MOM6/-/pipelines/27477
+
+Canonical experiments must reproduce answers
+
+
+Unit Testing?
+=============
+
+MOM6 does unit testing, but not yet at a mature state
+
+* Some modules are well tested, many are not.
+
+  * **Coverage is poor!**
+
+* No coherent strategy
+
+   * Every module has its own approach!
+
+* *NOTE: Our CI runs the unit tests!*
+
+
+Kinds of Unit Tests
+===================
+
+Infrastructure code with a clear outcome
+
+.. code:: fortran
+
+   function open_new_file(filename) result(rc)
+      if (len(filename) > 0) rc = open(filename, O_CREAT, S_IRUSR)
+
+Elemental numerical operations with definable results
+
+.. code:: fortran
+
+   function cuberoot(x)
+      cuberoot = x**(1./3.)
+
+Complex Solvers involving many operations
+
+.. code:: fortran
+
+   function remap_field(u1, h1, h2) result(u2)
+      u2 = ...
+
+
+What is a passing numerical test?
+=================================
+
+* Exact (as floating point?)
+
+* Match a defined result within a *tolerance*
+
+* *Property testing*, e.g. monotonicity
+
+
+.. Testing/Research Paradox
+   ========================
+
+   * We cannot test every permutation
+
+     * Can we define atomic operations?
+
+     * Can we test every possibility?
+
+   * Research will run untested configurations
+
+
+.. Design
+   ======
+
+   * Should tests be in a separate module?
+
+     * How to test private functions?  Should we?
+
+   * How to define verification of numerical solvers?
+
+     * Are trivial solutions sufficient?
+
+
+Unit Test Drivers
+=================
+
+.. code:: sh
+
+   $ ls config_src/drivers/unit_tests/
+
+   test_MOM_EOS.F90                 test_MOM_remapping.F90
+   test_MOM_file_parser.F90         test_MOM_string_functions.F90
+   test_MOM_mixedlayer_restrat.F90  test_numerical_testing_type.F90
+
+Each driver runs a module's unit tests.
+
+
+A simple driver
+===============
+
+.. code:: fortran
+
+   program test_MOM_EOS
+
+   use MOM_EOS, only : EOS_unit_tests
+   use MOM_error_handler, only : set_skip_mpi
+
+   call set_skip_mpi(.true.)
+      ! This unit test does not use MPI
+
+   if (EOS_unit_tests(.true.)) stop 1
+
+   end program test_MOM_EOS
+
+Load the module and run its unit tests
+
+
+A complex driver
+----------------
+
+.. include:: src/test_MOM_file_parser.F90
+   :code: fortran
+
+
+File Parser
+===========
+
+``MOM_file_parser.F90``
+   Module for reading input configuration (``"MOM_input"``)
+
+``MOM_file_parser_tests.F90``
+   Unit tests for the public API of ``MOM_file_parser``
+
+
+File Parser Tests
+=================
+
+Create a test
+
+.. code:: fortran
+
+   subroutine test_open_param_file
+     type(param_file_type) :: param
+
+     call create_test_file(param_filename)
+     call open_param_file(param_filename, param)
+     call close_param_file(param)
+   end subroutine test_open_param_file
+
+Add to ``TestSuite`` and run
+
+.. code:: fortran
+
+   subroutine run_file_parser_tests
+      type(TestSuite) :: suite
+
+      call suite%add(test_open_param_file, "Open parameter file")
+      ! ... more tests ...
+      call suite%run()
+   end subroutine run_file_parser_tests
+
+
+Test Output
+===========
+
+.. include:: src/test_file_parser.txt
+   :code:
+
+Tests marked ``(FATAL)`` are expected to fail.
+
+
+Error Handling
+==============
+
+.. notes::
+
+   This is not valid Fortran.
+
+      A procedure defined by means of Fortran shall not invoke setjmp or
+      longjmp (ISO/IEC 9899:2011, 7.13). If a procedure defined by means other
+      than Fortran invokes setjmp or longjmp, that procedure shall not cause
+      any procedure defined by means of Fortran to be invoked. A procedure
+      defined by means of Fortran shall not be invoked as a signal handler
+      (ISO/IEC 9899:2011, 7.14.1).
+
+   ``setjmp`` only used for explicit unit tests.
+
+.. code:: fortran
+
+   subroutine test_open_param_file_empty_filename
+     type(param_file_type) :: param
+
+     call open_param_file('', param)
+     ! FATAL; return to program
+   end subroutine test_open_param_file_empty_filename
+
+We use ``setjmp``/``longjmp`` to recover:
+
+.. code:: fortran
+
+   if (test%is_fatal) then
+     rc = sigsetjmp(env, 1)
+     if (rc == 0) then
+       call disable_fatal_errors(env)
+       call test%proc
+     endif
+     call enable_fatal_errors
+   else
+     call test%proc
+   endif
+
+
+Reproducible Sums
+=================
+
+.. notes::
+
+   kahan summation would probably catch the fommowing, but in general this is
+   a hard problem over large domains (~1M pts)
+
+Global summation is sensitive to order of summation
+
+.. math::
+
+   1 + 10^{20} + 1 - 10^{20} &= 0? \\
+   10^{20} + 1 - 10^{20} + 1 &= 1? \\
+
+MOM6 uses a fixed-precision summation method
+
+.. image:: img/fixedprec.svg
+   :width: 75%
+   :target: https://doi.org/10.1016/j.parco.2014.04.007
+
+
+Sum Property Test
+=================
+
+Randomize the order of summation and verify equivalence
+
+.. code:: fortran
+
+   call generate_array_of_values(array, HI, n_global)
+
+   total = reproducing_sum(array, HI%isc, HI%iec, HI%jsc, HI%jec)
+
+   do i = 1, n_repeat
+     call randomly_swap_elements(HI, array)
+     total_rand = reproducing_sum(array, HI%isc, HI%iec, HI%jsc, HI%jec)
+
+     if (abs(total - total_rand) > 0.) error stop
+   enddo
+
+
+A Remapping Test
+================
+
+.. notes::
+
+   This is for piecewise linear.  PPM and higher may have other requirements.
+
+MOM6 remapping requires *monotonic* profiles
+
+.. list-table::
+   :widths: 50 50
+
+   * - .. math::
+
+             (\overline{a}_i - a^l_i) (a^r_i - \overline{a}_i) & \geq 0 \\
+
+             (a^r_i - \overline{a}_i) (\overline{a}_{i+1} - a^r_i) & \geq 0 \\
+
+             (\overline{a}_i - a^l_i) (a^l_i - \overline{a}_{i-1}) & \geq 0 \\
+
+             \ldots
+
+     - .. image:: img/ppm.png
+          :width: 100%
+
+
+Remap Property Test
+===================
+
+MOM6 must be resilient to zero-thickness layers
+
+Test this by randomly insert zero-thickness layers to verify monotonicity.
+
+.. code:: fortran
+
+  seed(:) = 102030405             ! Reproducible random numbers
+  call random_seed(put=seed)
+
+  do iter = 1, niter
+    call random_number(u0)        ! Random values between 0 and 1
+    call random_number(h0)        ! Random grid space between 0 and 1
+    h0(:) = max(0., h0(:) - 0.05) ! Make 5% of values equal to zero
+
+    call remapCS%reconstruction%reconstruct(h0, u0)
+
+    if(remapCS%reconstruction%check_reconstruction(h0, u0)) &
+      error stop
+  enddo
+
+
+A Remap Bugfix
+==============
+
+.. notes::
+
+   *Courtesy of Alistair Adcroft*
+
+.. image:: img/remap_adcroft.png
+   :width: 66%
+
+.. math::
+
+   3 \overline{u} - 2 a_r \neq \overline{u} + 2(\overline{u} - a_r)
+
+
+Equation of State
+=================
+
+Test :math:`\rho = R(T, S, p)` within a prescribed tolerance
+
+.. include:: src/test_eos.txt
+   :code:
+
+Bugfixes in the Wright eqn of state
+
+
+An Untested Function
+====================
+
+.. notes::
+
+   This is a 2000-line "kitchen sink" function
+
+   Every academic has their own idea how to improve it, so it keeps growing.
+
+.. include:: src/MOM_hor_visc.F90
+   :code: fortran
+
+How to decompose in testable units without losing performance?
+
+
+Coverage
+========
+
+.. notes::
+
+   Coverage report for open_param_file.  Some comments
+
+   * `#####` denotes uncovered lines
+
+   * Asteriks denote uncovered branches within a line
+
+   * The epilogue denotes hidden methods within the derived type
+
+.. include:: src/MOM_file_parser.F90.gcov
+   :code:
+
+CI unit testing generates coverage reports
+
+
+Coverage Reporting
+==================
+
+.. notes::
+
+   Also integrated into our CI
+
+   Yeah, coverage sucks
+
+.. image:: img/codecov_io_mom6.png
+   :width: 80%
+   :target: https://app.codecov.io/gh/NOAA-GFDL/MOM6/tree/dev%2Fgfdl/src%2Fframework
+
+.. other frameworks?
+
+Early Steps
+===========
+
+This is how we're going, but what's next?
+
+* Increase coverage of our 200k line codebase
+
+* Design effective property tests
+
+* Can we break up large functions and test components without sacrificing
+  performance?
+
+Skillful design is still elusive, but we will continue learning, and try to get
+there!

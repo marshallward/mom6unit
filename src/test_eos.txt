@@ -1,0 +1,63 @@
+==== MOM_EOS: EOS_unit_tests ====
+
+MOM6 Sprac agrees with its check value:
+   3.5000000000000000E+01 vs.   3.5000000000000000E+01,
+   diff=  0.0000E+00, tol=  3.1086E-12
+MOM6 Sabs agrees with its check value:
+   3.5165039999999998E+01 vs.   3.5165039999999998E+01,
+   diff=  0.0000E+00, tol=  3.1086E-12
+MOM6 Tpot agrees with its check value :
+   9.9999999999999982E+00 vs.   1.0000000000000000E+01,
+   diff= -1.7764E-15, tol=  1.7764E-13
+MOM6 Tcons agrees with its check value :
+   9.9898117271773081E+00 vs.   9.9898117271773081E+00,
+   diff=  0.0000E+00, tol=  1.7764E-13
+UNESCO rho agrees with its check value :
+   1.0275434579611974E+03 vs.   1.0275434579611999E+03,
+   diff= -2.5011E-12, tol=  6.1159E-12
+
+The values of UNESCO rho and 1/spv agree.
+   1.02754346E+03 and   1.02754346E+03, ratio - 1 = 2.22044605E-16
+The values of UNESCO drho_dT agree:
+   -3.1705243792461518E-01 and  -3.1705243792713067E-01
+    2.51548782E-12 (  7.93E-12), tol=  4.78188932E-12
+The values of UNESCO drho_dS agree:
+    7.4999478074365467E-01 and   7.4999478069399339E-01
+    4.96612751E-11 (  6.62E-11), tol=  6.01637645E-11
+The values of UNESCO drho_dp agree:
+    4.1540156728890419E-07 and   4.1540156728889779E-07
+    6.40568666E-21 (  1.54E-14), tol=  1.75960906E-18
+The values of UNESCO dSV_dT agree:
+    3.0028296801809247E-07 and   3.0028296802062134E-07
+   -2.52886980E-18 ( -8.42E-12), tol=  4.63154747E-18
+The values of UNESCO dSV_dS agree:
+   -7.1032621680496561E-07 and  -7.1032621675299876E-07
+   -5.19668477E-17 ( -7.32E-11), tol=  6.31734499E-17
+The values of UNESCO drho_dT_dT agree:
+   -7.3301618619939545E-03 and  -7.3301618632134087E-03
+    1.21945423E-12 (  1.66E-10), tol=  5.92339270E-11
+The values of UNESCO drho_dS_dS agree:
+    4.5228464186723548E-04 and   4.5228464352931042E-04
+   -1.66207494E-12 ( -3.67E-09), tol=  2.56727503E-11
+The values of UNESCO drho_dS_dT agree:
+   -1.2253618144914278E-03 and  -1.2253618142377823E-03
+   -2.53645412E-13 ( -2.07E-10), tol=  5.32124361E-12
+The values of UNESCO drho_dT_dP agree:
+   -1.2936173553223114E-09 and  -1.2936173551519072E-09
+   -1.70404169E-19 ( -1.32E-10), tol=  2.49900195E-17
+The values of UNESCO drho_dS_dP agree:
+   -5.6725745185879020E-10 and  -5.6725745195579378E-10
+    9.70035738E-20 (  1.71E-10), tol=  5.13103191E-18
+
+...
+
+The values of WRIGHT drho_dT_dT disagree.
+   -1.1402818751119731E-02 and  -7.2448371213340561E-03
+   differ by  -4.15798163E-03 ( -4.46E-01), tol=  3.11848682E-04
+The values of WRIGHT drho_dT_dP disagree.
+   -1.1893735082701434E-09 and  -1.3077249288733402E-09
+   differ by   1.18351421E-10 (  9.48E-02), tol=  8.87638143E-12
+
+...
+
+EOS_unit_tests: All EOS consistency tests have passed.
