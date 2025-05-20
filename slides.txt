@@ -5,7 +5,7 @@ Unit Testing in MOM6
 :author: Marshall Ward
 :organization: NOAA-GFDL
 :description: Efforts to implement unit tests in MOM6
-:date: 2024-08-28
+:date: 2025-05-20
 :url: https://github.com/marshallward/mom6unit.html
 :preface:
    Gathering of talking points for porting MOM6 to GPU platforms.
