@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="Marshall Ward">
-  <meta name="dcterms.date" content="2024-08-28">
+  <meta name="dcterms.date" content="2025-05-20">
   <title>Unit Testing in MOM6</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -43,7 +43,7 @@
 
     <footer style="font-size: 1pc; position: absolute; bottom: 2%; left: 2%;">
       <code><p><a
-href="https://github.com/marshallward/mom6unit.html">https://github.com/marshallward/mom6unit.html</a></p></code>
+href="https://www.marshallward.org/mom6unit/">https://www.marshallward.org/mom6unit/</a></p></code>
     </footer>
 
     <div class="slides">
@@ -59,7 +59,7 @@ href="https://github.com/marshallward/mom6unit.html">https://github.com/marshall
   <p class="author" style="text-align: right;">Marshall Ward</p>
   <!-- org has a <p> for some reason... so use <div> -->
   <div class="organization" style="text-align: right;"><p>NOAA-GFDL</p></div>
-  <p class="date" style="text-align: right;">2024-08-28</p>
+  <p class="date" style="text-align: right;">2025-05-20</p>
   <!-- Currently cannot add notes to a title slide, so have to do manually-->
   <aside class="notes">
     <p>Gathering of talking points for porting MOM6 to GPU
@@ -77,8 +77,8 @@ every pull request includes the following:</p>
 <li>Rotational invariance</li>
 <li>All testing is <em>bitwise reproducible</em></li>
 </ul>
-<p>But <em>unit testing</em> is a relatively new concept to our test
-suite.</p>
+<p>But <em>unit testing</em> has a relatively small role in the
+system.</p>
 </section>
 
 <section id="ci-testing" class="title-slide slide level1">
@@ -108,17 +108,16 @@ data-src="img/gitlab_regression.png" alt="image" /></a></p>
 
 <section id="unit-testing" class="title-slide slide level1">
 <h1>Unit Testing?</h1>
-<p>MOM6 does unit testing, but not yet at a mature state</p>
+<p>MOM6 does unit testing, but lags behind other tests.</p>
 <ul>
 <li><p>Some modules are well tested, many are not.</p>
 <ul>
 <li><strong>Coverage is poor!</strong></li>
 </ul></li>
-<li><p>No coherent strategy</p>
+<li><p>No consistent framework across code</p>
 <ul>
 <li>Every module has its own approach!</li>
 </ul></li>
-<li><p><em>NOTE: Our CI runs the unit tests!</em></p></li>
 </ul>
 </section>
 
@@ -922,8 +921,7 @@ requirements.</p>
 <section id="remap-property-test" class="title-slide slide level1">
 <h1>Remap Property Test</h1>
 <p>MOM6 must be resilient to zero-thickness layers</p>
-<p>Test this by randomly insert zero-thickness layers to verify
-monotonicity.</p>
+<p>Verify monotonicity by randomly inserting zero-layers</p>
 <pre class="fortran"><code>seed(:) = 102030405             ! Reproducible random numbers
 call random_seed(put=seed)
 

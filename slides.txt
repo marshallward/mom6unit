@@ -6,7 +6,7 @@ Unit Testing in MOM6
 :organization: NOAA-GFDL
 :description: Efforts to implement unit tests in MOM6
 :date: 2025-05-20
-:url: https://github.com/marshallward/mom6unit.html
+:url: https://www.marshallward.org/mom6unit/
 :preface:
    Gathering of talking points for porting MOM6 to GPU platforms.
 
@@ -25,7 +25,7 @@ Testing of every pull request includes the following:
 
 * All testing is *bitwise reproducible*
 
-But *unit testing* is a relatively new concept to our test suite.
+But *unit testing* has a relatively small role in the system.
 
 
 CI Testing
@@ -60,17 +60,15 @@ Canonical experiments must reproduce answers
 Unit Testing?
 =============
 
-MOM6 does unit testing, but not yet at a mature state
+MOM6 does unit testing, but lags behind other tests.
 
 * Some modules are well tested, many are not.
 
   * **Coverage is poor!**
 
-* No coherent strategy
+* No consistent framework across code
 
    * Every module has its own approach!
-
-* *NOTE: Our CI runs the unit tests!*
 
 
 Kinds of Unit Tests
@@ -333,7 +331,7 @@ Remap Property Test
 
 MOM6 must be resilient to zero-thickness layers
 
-Test this by randomly insert zero-thickness layers to verify monotonicity.
+Verify monotonicity by randomly inserting zero-layers
 
 .. code:: fortran
 
